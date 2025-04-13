@@ -60,3 +60,25 @@
     display: flex;
     flex-direction: column;
 }
+.card__header{
+    @apply mb-1 font-bold
+}
+.card__date{
+    @apply text-xs italic text-right
+}
+.card__description{
+    @apply mb-2 text-[#706f6c] dark:text-[#A1A09A];
+}
+.main-content {
+    @apply flex items-center justify-center w-full transition-opacity opacity-100 lg:grow
+}
+
+.main-content__grid {
+    @apply grid lg:grid-cols-3 sm:grid-cols-1 md:grid-rows-1 gap-5 max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-col
+}
+body{
+    @apply bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col
+}
+header{
+    @apply w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 ;
+}
