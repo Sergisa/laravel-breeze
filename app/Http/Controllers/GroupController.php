@@ -5,19 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
 use App\Models\Group;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
-    use ModelController{
-        index as protected ModelControllerIndex;
-        show as protected ModelControllerShow;
-        store as protected ModelControllerStore;
-        update as protected ModelControllerUpdate;
-        destroy as protected ModelControllerDestroy;
-    }
-    const modelClass = Group::class;
-
     /**
      * Show the form for creating a new resource.
      */
@@ -34,28 +27,30 @@ class GroupController extends Controller
 
     public function index()
     {
-        return $this->ModelControllerIndex();
+        return Group::all();
     }
-    public function store(StoreGroupRequest $request)
+
+    public function store(StoreGroupRequest|FormRequest $request)
     {
-        $this->ModelControllerStore($request);
+        Group::insert($request->only('name'));
     }
 
     public function show(Group $group)
     {
-        if(Auth::user()->cannot('viewAny',Group::class)){
+        if (Auth::user()->cannot('viewAny', Group::class)) {
             abort(403, "Вам нельзя");
         }
-        return $this->ModelControllerShow($group);
+        return $group;
     }
 
-    public function update(UpdateGroupRequest $request, Group $group)
+    public function update(UpdateGroupRequest|FormRequest $request, Group|Model $group)
     {
-        $this->ModelControllerUpdate($request,$group);
+        $group->update($request->only('name'));
+        $group->save();
     }
 
     public function destroy(Group $group)
     {
-        $this->ModelControllerDestroy($group);
+        $group->delete();
     }
 }
